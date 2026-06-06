@@ -28,9 +28,10 @@ class SeatStore:
         reserved = sum(1 for name in self._seats.values() if name)
         total = len(self._seats)
         return {"total": total, "reserved": reserved, "available": total - reserved}
-
+    # 예약자 이름(또는 일부 문자열)으로 예약된 좌석 검색
     def find_reservations_by_name(self, keyword):
         """Find reserved seats whose reserver name contains the given keyword."""
+        # 대소문자 구분 없이 검색하기 위해 소문자로 변환
         normalized_keyword = keyword.strip().lower()
 
         if not normalized_keyword:
