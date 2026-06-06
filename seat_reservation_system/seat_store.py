@@ -29,6 +29,24 @@ class SeatStore:
         total = len(self._seats)
         return {"total": total, "reserved": reserved, "available": total - reserved}
 
+    def find_reservations_by_name(self, keyword):
+        """Find reserved seats whose reserver name contains the given keyword."""
+        normalized_keyword = keyword.strip().lower()
+
+        if not normalized_keyword:
+            return []
+
+        matched_reservations = []
+
+        for seat_id, reserved_name in self._seats.items():
+            if reserved_name is None:
+                continue
+
+            if normalized_keyword in reserved_name.lower():
+                matched_reservations.append((seat_id, reserved_name))
+
+        return matched_reservations
+
     def _get(self, seat_id):
         if seat_id not in self._seats:
             raise ValueError("Seat does not exist.")
