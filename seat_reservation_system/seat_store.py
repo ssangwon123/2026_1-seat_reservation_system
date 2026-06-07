@@ -28,6 +28,22 @@ class SeatStore:
         reserved = sum(1 for name in self._seats.values() if name)
         total = len(self._seats)
         return {"total": total, "reserved": reserved, "available": total - reserved}
+    
+    # 예약자별 예약 횟수를 집계하여 많은 순으로 정렬
+    def reservation_ranking(self):
+        counts = {}
+
+        for reserved_name in self._seats.values():
+            if reserved_name is None:
+                continue
+
+            counts[reserved_name] = counts.get(reserved_name, 0) + 1
+
+        return sorted(
+            counts.items(),
+            key=lambda item: item[1],
+            reverse=True
+        )
 
     def _get(self, seat_id):
         if seat_id not in self._seats:

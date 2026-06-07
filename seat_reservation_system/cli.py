@@ -6,6 +6,8 @@ list                      - List all seats
 reserve <seat_id> <name>  - Reserve a seat
 cancel <seat_id> [name]   - Cancel a reservation
 status <seat_id>          - Show seat status
+# 예약 횟수가 많은 순으로 출력
+ranking                   - Show reservation ranking
 stats                     - Show summary stats
 help                      - Show this help
 exit                      - Exit the program"""
@@ -48,6 +50,18 @@ def run_cli():
                 _require_args(command, args, 1)
                 seat_id, name = store.status(int(args[0]))
                 _print_seat(seat_id, name)
+            elif command == "ranking":
+                # 예약자별 예약 횟수 집계 결과 조회
+                ranking = store.reservation_ranking()
+
+                if not ranking:
+                    print("No reservations found.")
+                else:
+                    print("Reservation Ranking")
+
+                    # 예약 횟수가 많은 순으로 순위 출력
+                    for index, (name, count) in enumerate(ranking, start=1):
+                        print(f"{index}. {name} - {count} seat(s)")         
             elif command == "stats":
                 stats = store.stats()
                 print(
