@@ -28,6 +28,22 @@ class SeatStore:
         reserved = sum(1 for name in self._seats.values() if name)
         total = len(self._seats)
         return {"total": total, "reserved": reserved, "available": total - reserved}
+        # 전체 좌석 중 가운데에 가장 가까운 빈 좌석을 추천
+    def recommend_center_seat(self):
+        available_seats = [
+            seat_id for seat_id, name in self._seats.items()
+            if name is None
+        ]
+
+        if not available_seats:
+            return None
+
+        center = (min(self._seats) + max(self._seats)) / 2
+
+        return min(
+            available_seats,
+            key=lambda seat_id: abs(seat_id - center)
+        )
 
     def _get(self, seat_id):
         if seat_id not in self._seats:
